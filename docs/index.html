@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arise</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#04060F">
+<link rel="icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4FB;--card:#FFFFFF;--ink:#241A3D;--mute:#7A7190;--line:#E6E0F0;--sun:#FF7A3D;--steps:#1E9E94;--food:#7A4DE0;--work:#E0457B;--sky1:#FFE3CF;--sky2:#EADFFB;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#150F26;--card:#21183A;--ink:#F3EEFF;--mute:#A99FC4;--line:#33284F;--sun:#FF8A52;--steps:#3CC4B8;--food:#A58BFF;--work:#FF6F9C;--sky1:#4A2A3E;--sky2:#2A1F4D}}
+:root[data-theme="dark"]{--bg:#150F26;--card:#21183A;--ink:#F3EEFF;--mute:#A99FC4;--line:#33284F;--sun:#FF8A52;--steps:#3CC4B8;--food:#A58BFF;--work:#FF6F9C;--sky1:#4A2A3E;--sky2:#2A1F4D}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Outfit',system-ui,sans-serif}
+body{max-width:520px;margin:0 auto;padding:16px 16px 96px}
+h1{font-size:28px;margin:0;font-weight:700;letter-spacing:-.5px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.date{color:var(--mute);font-size:14px}
+.hero{background:linear-gradient(180deg,var(--sky2),var(--sky1));border-radius:24px;padding:18px 16px 14px;text-align:center}
+.hero svg{width:100%;max-width:320px;height:auto}
+.hero .big{font-size:40px;font-weight:700;line-height:1;margin-top:-34px;position:relative}
+.hero .sub{color:var(--mute);font-size:14px;margin-top:4px}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.stat b{font-size:20px;display:block}.stat span{font-size:12px;color:var(--mute)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;border-radius:3px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}
+h2{font-size:17px;margin:0 0 10px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+form .full{grid-column:1/-1}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;min-width:0}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:10px 14px;font-weight:600;color:#fff;background:var(--sun)}
+button.ghost{background:transparent;color:var(--mute);padding:4px 8px;font-weight:500}
+button.chip{background:var(--bg);color:var(--ink);border:1px solid var(--line);padding:8px 12px}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item small{color:var(--mute);display:block}
+.empty{color:var(--mute);font-size:14px;padding:6px 0}
+.chart{display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:6px}
+.chart div{flex:1;text-align:center;font-size:11px;color:var(--mute);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.chart i{display:block;background:var(--steps);border-radius:6px 6px 2px 2px;margin-bottom:4px;min-height:3px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav .in{display:flex;width:100%;max-width:520px}
+nav button{flex:1;background:none;color:var(--mute);border-radius:0;padding:12px 4px;font-size:13px}
+nav button[aria-selected="true"]{color:var(--sun)}
+.pane{display:none}.pane.on{display:block}
+.mrow{display:flex;justify-content:space-between;font-size:14px;margin-top:10px}.mrow:first-child{margin-top:0}
+.scan{width:100%;background:var(--food);margin-bottom:6px}
+button.chip.on{background:var(--sun);color:#fff;border-color:var(--sun)}
+.hr{margin-left:10px;font-weight:600}
+html:root:root:root{--bg:#04060F;--card:#0A1330;--ink:#E4EDFF;--mute:#7F93C7;--line:#1E3A8A;--sun:#4C8DFF;--steps:#22E1D0;--food:#9B6BFF;--work:#FF4D6D;--sky1:#0E2260;--sky2:#1A0F45;color-scheme:dark}
+body{font-family:'Rajdhani',system-ui,sans-serif;font-size:17px;background:radial-gradient(120% 60% at 50% -10%,#10265f 0,transparent 60%),var(--bg);background-attachment:fixed}
+h1{font-family:'Orbitron',sans-serif;letter-spacing:4px;text-shadow:0 0 14px var(--sun)}
+h2{font-weight:700;letter-spacing:1px;color:var(--sun);text-shadow:0 0 8px rgba(76,141,255,.6)}
+h2::before{content:'[ '}h2::after{content:' ]'}
+.card,.stat,.hero{border-radius:3px;border:1px solid var(--line);box-shadow:0 0 16px rgba(76,141,255,.2),inset 0 0 22px rgba(76,141,255,.07)}
+.hero .big{font-family:'Orbitron',sans-serif;text-shadow:0 0 16px var(--sun)}
+#arc,#sun{filter:drop-shadow(0 0 7px var(--sun))}
+button{border-radius:2px;box-shadow:0 0 12px rgba(76,141,255,.45);font-weight:700;letter-spacing:.5px}
+button.ghost,button.chip{box-shadow:none}
+input,select{border-radius:2px;background:#060C20;border-color:var(--line)}
+nav{background:#070D24;border-top:1px solid var(--line);box-shadow:0 -4px 20px rgba(76,141,255,.2)}
+#rank{color:var(--sun)}
+label{display:block;font-size:13px;color:var(--mute);margin-bottom:2px}
+.onb{position:fixed;inset:0;z-index:30;background:var(--bg);overflow:auto;padding:calc(18px + env(safe-area-inset-top,0px)) 16px 40px}
+.onb[hidden]{display:none}.onb .in{max-width:520px;margin:0 auto}
+nav button{padding:10px 2px;font-size:12px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mc{border:1px solid;padding:8px 10px;border-radius:3px;background:rgba(76,141,255,.05)}
+.mc b{display:block;font-size:12px;letter-spacing:1px}.mc span{font-size:17px;display:block}.mc small{font-size:11px;color:var(--mute)}.mc .bar{margin:4px 0}
+.ni{display:block;font-size:20px;line-height:1;margin-bottom:2px}
+.hero{position:relative}.deco{position:absolute;top:10px;font-size:24px;opacity:.75;filter:drop-shadow(0 0 6px var(--food))}.deco.l{left:12px}.deco.r{right:12px}
+.sys{border:1px solid var(--sun);background:rgba(76,141,255,.08);padding:10px 12px;margin-bottom:12px;box-shadow:0 0 14px rgba(76,141,255,.35);border-radius:3px;font-size:16px}
+.sys .tag{background:var(--sun);color:#04060F;font-weight:700;padding:1px 6px;margin-right:6px;font-size:12px}
+.stw{display:flex;gap:14px;align-items:center}.stats{flex:1}
+.stk{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sk{border:1px solid var(--line);padding:8px 2px;text-align:center;border-radius:3px;filter:grayscale(1);opacity:.4}
+.sk span{font-size:30px;display:block;line-height:1.2}.sk small{font-size:11px;line-height:1.1;display:block}
+.sk.on{filter:none;opacity:1;box-shadow:0 0 12px rgba(155,107,255,.55);transform:rotate(-3deg)}.sk.on:nth-child(even){transform:rotate(3deg)}
+.toast{position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:50;background:#050A22;border:1px solid var(--sun);padding:18px 28px;text-align:center;box-shadow:0 0 40px var(--sun);animation:pop .5s ease-out}
+.toast b{display:block;font-family:'Orbitron',sans-serif;font-size:22px;color:var(--sun)}
+@keyframes pop{from{transform:translateX(-50%) scale(.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.toast{animation:none}}
+</style>
+</head>
+<body>
+<div class="onb" id="onb" hidden><div class="in">
+<h1>Arise</h1>
+<div class="card"><h2>⚠️ System</h2><div class="empty">You have been chosen as a Player. Enter your details and the System will build your quests: workouts, diet, macros and step goal.</div></div>
+<form id="onbForm" class="card">
+<div class="full"><label for="oName">Player name</label><input id="oName" required></div>
+<div><label for="oAge">Age</label><input id="oAge" type="number" min="16" max="80" inputmode="numeric" required></div>
+<div><label for="oSex">Sex</label><select id="oSex"><option>Male</option><option>Female</option></select></div>
+<div><label for="oH">Height (cm)</label><input id="oH" type="number" min="120" max="230" inputmode="numeric" required></div>
+<div><label for="oW">Weight (kg)</label><input id="oW" type="number" min="35" max="250" step="0.1" inputmode="decimal" required></div>
+<div><label for="oTW">Target weight (kg)</label><input id="oTW" type="number" min="35" max="250" step="0.1" inputmode="decimal" required></div>
+<div><label for="oDays">Training days a week</label><select id="oDays"><option>3</option><option>4</option><option selected>5</option><option>6</option></select></div>
+<div class="full"><label for="oBody">Body type</label><select id="oBody"><option value="Ectomorph">Ectomorph: lean, hard to gain weight</option><option value="Mesomorph" selected>Mesomorph: athletic, gains muscle easily</option><option value="Endomorph">Endomorph: broader, gains fat easily</option></select></div>
+<div class="full"><label for="oLook">Body you want to achieve</label><select id="oLook"><option value="Muscular">Muscular, bodybuilder build</option><option value="Athletic" selected>Athletic, balanced and fit</option><option value="Lean">Lean and shredded</option><option value="Strong">Strong, powerlifter build</option><option value="Toned">Slim and toned</option></select></div>
+<div><label for="oDiet">Diet</label><select id="oDiet"><option value="Veg">Vegetarian</option><option value="Egg">Eggetarian</option><option value="Non" selected>Non-vegetarian</option></select></div>
+<div><label for="oAct">Daily activity</label><select id="oAct"><option value="Sedentary">Mostly sitting</option><option value="Light" selected>Light movement</option><option value="Active">On my feet a lot</option></select></div>
+<button class="full" type="submit">⚡ Awaken</button>
+<div class="empty full">Estimates only, not medical advice. Check with a doctor before starting a new diet or training plan.</div>
+</form></div></div>
+<header><div><h1>⚔️ Arise</h1><div class="date" id="date"></div><div class="date" id="rank"></div></div><button class="ghost" id="goalsBtn">Goals</button></header>
+
+<section class="pane on" id="p-today">
+  <div class="sys" id="sysmsg"></div>
+  <div class="hero"><span class="deco l" aria-hidden="true">⚔️</span><span class="deco r" aria-hidden="true">🌑</span>
+    <svg viewBox="0 0 320 170" aria-hidden="true">
+      <path d="M30 160 A130 130 0 0 1 290 160" fill="none" stroke="var(--line)" stroke-width="14" stroke-linecap="round"/>
+      <path id="arc" d="M30 160 A130 130 0 0 1 290 160" fill="none" stroke="var(--sun)" stroke-width="14" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/>
+      <circle id="sun" cx="30" cy="160" r="13" fill="var(--sun)"/>
+    </svg>
+    <div class="big" id="hSteps">0</div>
+    <div class="sub" id="hSub">steps today</div>
+  </div>
+  <div class="row">
+    <div class="stat"><b id="sCal">0</b><span>kcal eaten</span><div class="bar"><i id="bCal" style="background:var(--food);width:0"></i></div></div>
+    <div class="stat"><b id="sBurn">0</b><span>kcal burned</span><div class="bar"><i id="bBurn" style="background:var(--work);width:0"></i></div></div>
+    <div class="stat"><b id="sMin">0</b><span>active min</span><div class="bar"><i id="bMin" style="background:var(--steps);width:0"></i></div></div>
+  </div>
+  <div class="card"><h2>🧿 Status window</h2><div class="stw" id="status"></div></div>
+  <div class="card"><h2>📜 Daily Quest</h2><div id="quest"></div></div>
+  <div class="card"><h2>🍖 Macros today</h2><div id="macros"></div></div>
+  <div class="card"><h2>🔥 Remaining today</h2><div id="remain" class="empty"></div></div>
+  <div class="card"><h2>🏅 Shadow Army</h2><div class="stk" id="stickers"></div></div>
+</section>
+
+<section class="pane" id="p-food">
+  <div class="card"><h2>🍗 Log a meal</h2>
+    <button type="button" class="scan" id="scanBtn">Scan meal with camera</button>
+    <input type="file" id="fCam" accept="image/*" capture="environment" hidden>
+    <div class="empty" id="scanMsg"></div>
+    <form id="fForm">
+      <input class="full" id="fName" placeholder="What did you eat?" required>
+      <input id="fCal" type="number" min="0" inputmode="numeric" placeholder="Calories" required>
+      <input id="fPro" type="number" min="0" inputmode="numeric" placeholder="Protein (g)">
+      <input id="fCarb" type="number" min="0" inputmode="numeric" placeholder="Carbs (g)">
+      <input id="fFat" type="number" min="0" inputmode="numeric" placeholder="Fat (g)">
+      <button class="full" type="submit">Add meal</button>
+    </form></div>
+  <div class="card"><h2>Today’s meals</h2><div id="fList"></div></div>
+</section>
+
+<section class="pane" id="p-work">
+  <div class="card"><h2>🛡️ Weekly trial · WHO guidelines</h2><div id="who"></div></div>
+  <div class="card"><h2>🗡️ Dungeon raid</h2>
+    <div class="chips" id="splitChips"></div>
+    <div id="sugg"></div>
+    <div class="empty">WHO sets weekly targets, not exact exercises. These picks are compound-focused and cover all major muscle groups.</div>
+    <form id="lForm">
+      <select class="full" id="lEx"></select>
+      <input id="lSets" type="number" min="1" inputmode="numeric" placeholder="Sets" required>
+      <input id="lReps" type="number" min="1" inputmode="numeric" placeholder="Reps" required>
+      <input class="full" id="lKg" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Weight in kg (blank for bodyweight)">
+      <button class="full" type="submit">Log exercise</button>
+    </form>
+    <div id="lList"></div></div>
+  <div class="card"><h2>🏃 Log cardio or other activity</h2>
+    <form id="wForm">
+      <select class="full" id="wType"><option>Walk</option><option>Run</option><option>Cycling</option><option>Strength</option><option>Yoga</option><option>HIIT</option><option>Swim</option><option>Other</option></select>
+      <input id="wMin" type="number" min="1" inputmode="numeric" placeholder="Minutes" required>
+      <input id="wCal" type="number" min="0" inputmode="numeric" placeholder="Calories burned">
+      <button class="full" type="submit">Add workout</button>
+    </form></div>
+  <div class="card"><h2>Today’s workouts</h2><div id="wList"></div></div>
+</section>
+
+<section class="pane" id="p-steps">
+  <div class="card"><h2>👟 Steps today</h2>
+    <div class="chips"><button class="chip" data-add="500">+500</button><button class="chip" data-add="1000">+1,000</button><button class="chip" data-add="2500">+2,500</button><button class="chip" data-add="-500">−500</button></div>
+    <form id="stForm"><input id="stIn" type="number" min="0" inputmode="numeric" placeholder="Set total steps"><button type="submit">Save steps</button></form>
+  </div>
+  <div class="card"><h2>⌚ Hunter link (smartwatch)</h2><div class="empty">Connect a Bluetooth watch or band that shares step cadence or heart rate. Watches that only sync to Apple Health, Samsung Health or Fitbit can’t be read from a web page.</div><button id="watchBtn" type="button">Connect watch</button><span id="hr" class="hr"></span><div class="empty" id="watchMsg"></div></div>
+  <div class="card"><h2>📈 Last 7 days</h2><div class="chart" id="chart"></div></div>
+</section>
+
+<section class="pane" id="p-ranks"><div id="ranksBox"></div></section>
+<section class="pane" id="p-plan"><div id="planBox"></div></section>
+
+<nav><div class="in" role="tablist">
+  <button role="tab" data-t="today" aria-selected="true"><b class="ni">🏠</b>Today</button>
+  <button role="tab" data-t="food" aria-selected="false"><b class="ni">🍖</b>Food</button>
+  <button role="tab" data-t="work" aria-selected="false"><b class="ni">🗡️</b>Raid</button>
+  <button role="tab" data-t="ranks" aria-selected="false"><b class="ni">🏆</b>Ranks</button>
+  <button role="tab" data-t="steps" aria-selected="false"><b class="ni">👟</b>Steps</button>
+  <button role="tab" data-t="plan" aria-selected="false"><b class="ni">📜</b>Plan</button>
+</div></nav>
+
+<script>
+const KEY='arise-v1';
+let S={goals:{cal:2200,steps:8000,min:45},days:{}};
+try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);if(p&&p.goals&&p.days)S=p}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);S.goals.pro=S.goals.pro||130;
+const dk=d=>{const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+const today=()=>dk(new Date());
+const day=(k=today())=>{const d=S.days[k]||(S.days[k]={food:[],work:[],steps:0});d.lifts=d.lifts||[];return d};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>Number(n).toLocaleString();
+const pct=(a,b)=>Math.max(0,Math.min(100,b?a/b*100:0));
+
+function render(){
+  const d=day(),g=S.goals;renderWork();$('onb').hidden=!!S.profile;renderPlan();
+  $('date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+  const eat=d.food.reduce((a,f)=>a+f.cal,0),burn=d.work.reduce((a,w)=>a+w.cal,0),min=d.work.reduce((a,w)=>a+w.min,0);
+  const p=pct(d.steps,g.steps);
+  $('arc').setAttribute('stroke-dasharray',p+' 100');
+  const ang=Math.PI*(1-p/100);
+  $('sun').setAttribute('cx',160+130*Math.cos(ang));$('sun').setAttribute('cy',160-130*Math.sin(ang));
+  $('hSteps').textContent=fmt(d.steps);
+  $('hSub').textContent=d.steps>=g.steps?'Goal reached. Well done.':'of '+fmt(g.steps)+' steps';
+  $('sCal').textContent=fmt(eat);$('sBurn').textContent=fmt(burn);$('sMin').textContent=min;
+  $('bCal').style.width=pct(eat,g.cal)+'%';$('bBurn').style.width=pct(burn,500)+'%';$('bMin').style.width=pct(min,g.min)+'%';
+  const M={pro:0,carb:0,fat:0};d.food.forEach(f=>{M.pro+=f.pro||0;M.carb+=f.carb||0;M.fat+=f.fat||0});
+  const gf=Math.round(g.cal*.28/9),G={pro:g.pro,fat:gf,carb:Math.max(0,Math.round((g.cal-g.pro*4-gf*9)/4))};
+  $('macros').innerHTML=[['Protein','pro','var(--food)'],['Carbs','carb','var(--sun)'],['Fat','fat','var(--work)']].map(([n,k,c])=>`<div class="mrow"><span>${n}</span><span>${Math.round(M[k])} / ${G[k]} g</span></div><div class="bar"><i style="background:${c};width:${pct(M[k],G[k])}%"></i></div>`).join('');
+  const q=[['Walk '+fmt(g.steps)+' steps',d.steps>=g.steps],['Complete a strength session',d.lifts.length>0],['Hit '+G.pro+' g protein',M.pro>=G.pro*.9],['Log 3 meals',d.food.length>=3]];
+  $('quest').innerHTML=q.map(([t,ok])=>`<div class="mrow"><span>${ok?'✔':'▢'} ${t}</span><span style="color:${ok?'var(--steps)':'var(--mute)'}">${ok?'Cleared':'Open'}</span></div>`).join('')+(q.every(x=>x[1])?'<div class="empty">Daily Quest cleared. The System is pleased.</div>':'');if(q.every(x=>x[1])&&S.qd!==today()){S.qd=today();S.bonus=(S.bonus||0)+50;save();toast('QUEST CLEARED','Reward: +50 XP')}
+  let xp=S.bonus||0;Object.values(S.days).forEach(x=>{xp+=Math.floor((x.steps||0)/100)+(x.work||[]).reduce((a,w)=>a+w.min*2,0)+(x.lifts||[]).reduce((a,l)=>a+setXP(l),0)+(x.food||[]).length*5});
+  const lv=Math.floor(Math.sqrt(xp/40))+1,rk=lv<5?'E':lv<10?'D':lv<18?'C':lv<28?'B':lv<40?'A':'S';
+  $('rank').textContent=(S.profile?S.profile.name+' · ':'')+'Rank '+rk+' · Lv '+lv+' · '+fmt(xp)+' XP';statusUI(xp,lv,rk);renderRanks(xp,lv);
+  const left=g.cal-eat+burn;
+  $('remain').innerHTML=(left>=0?'<b>'+fmt(left)+' kcal</b> left to eat':'<b>'+fmt(-left)+' kcal</b> over your goal')+' · '+fmt(Math.max(0,g.steps-d.steps))+' steps and '+Math.max(0,g.min-min)+' active min to go';
+  const pro=d.food.reduce((a,f)=>a+(f.pro||0),0);
+  $('fList').innerHTML=d.food.length?d.food.map((f,i)=>`<div class="item"><div>${esc(f.name)}<small>${fmt(f.cal)} kcal · P ${f.pro||0} · C ${f.carb||0} · F ${f.fat||0} g</small></div><button class="ghost" data-df="${i}" aria-label="Delete ${esc(f.name)}">Delete</button></div>`).join('')+`<div class="empty">Total: ${fmt(eat)} kcal</div>`:'<div class="empty">No meals yet. Add your first one above.</div>';
+  $('wList').innerHTML=d.work.length?d.work.map((w,i)=>`<div class="item"><div>${esc(w.type)}<small>${w.min} min · ${fmt(w.cal)} kcal burned</small></div><button class="ghost" data-dw="${i}" aria-label="Delete ${esc(w.type)}">Delete</button></div>`).join(''):'<div class="empty">No workouts yet. Log one above.</div>';
+  const days=[];for(let i=6;i>=0;i--){const t=new Date();t.setDate(t.getDate()-i);days.push(t)}
+  const vals=days.map(t=>(S.days[dk(t)]||{}).steps||0),mx=Math.max(g.steps,...vals,1);
+  $('chart').innerHTML=days.map((t,i)=>`<div title="${fmt(vals[i])} steps"><i style="height:${vals[i]/mx*90}px;${vals[i]>=g.steps?'background:var(--sun)':''}"></i>${t.toLocaleDateString(undefined,{weekday:'narrow'})}</div>`).join('');
+}
+const SPLIT={Push:['Bench press','Overhead press','Incline dumbbell press','Lateral raise','Triceps pushdown','Push-ups or dips'],Pull:['Pull-ups or lat pulldown','Barbell or cable row','Face pull','Biceps curl','Hammer curl','Rear delt fly'],Legs:['Back squat','Romanian deadlift','Leg press','Walking lunges','Leg curl','Calf raise'],Upper:['Bench press','Seated row','Overhead press','Lat pulldown','Biceps curl','Triceps extension'],Lower:['Deadlift','Goblet or front squat','Hip thrust','Leg extension','Leg curl','Calf raise']};
+let split='Push';try{split=localStorage.getItem('arise-split')||split}catch(e){}
+const todaySplit=S.plan&&S.plan.sched.find(x=>x[0]===['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]);if(todaySplit&&SPLIT[todaySplit[1]])split=todaySplit[1];
+function lastLift(ex){for(const k of Object.keys(S.days).sort().reverse()){const l=(S.days[k].lifts||[]).filter(x=>x.ex===ex);if(l.length)return l[l.length-1]}return null}
+function renderWork(){
+  const d=day();
+  $('splitChips').innerHTML=Object.keys(SPLIT).map(k=>`<button class="chip${k===split?' on':''}" data-split="${k}">${EM[k]} ${k}</button>`).join('');
+  const done=new Set(d.lifts.map(l=>l.ex));
+  $('sugg').innerHTML=SPLIT[split].map(ex=>{const l=lastLift(ex);return `<div class="item"><div>${done.has(ex)?'✓ ':''}${ex}<small>${l?'Last: '+l.sets+'×'+l.reps+(l.kg?' @ '+l.kg+' kg':' bodyweight'):'Not logged yet'}</small></div></div>`}).join('');
+  const sel=$('lEx'),cur=sel.value;sel.innerHTML=SPLIT[split].map(e=>`<option>${e}</option>`).join('');if(SPLIT[split].includes(cur))sel.value=cur;
+  $('lList').innerHTML=d.lifts.length?'<h2 style="margin-top:14px">Logged today</h2>'+d.lifts.map((l,i)=>`<div class="item"><div>${esc(l.ex)}<small>${l.day} · ${l.sets}×${l.reps}${l.kg?' @ '+l.kg+' kg':' bodyweight'}</small></div><button class="ghost" data-dl="${i}" aria-label="Delete ${esc(l.ex)}">Delete</button></div>`).join(''):'';
+  let aer=0,sd=0;for(let i=0;i<7;i++){const t=new Date();t.setDate(t.getDate()-i);const x=S.days[dk(t)];if(!x)continue;(x.work||[]).forEach(w=>aer+=w.min*(['Run','HIIT'].includes(w.type)?2:1));if((x.lifts||[]).length)sd++}
+  $('who').innerHTML=`<div class="mrow"><span>Aerobic, moderate-equivalent min</span><span>${aer} / 150</span></div><div class="bar"><i style="background:var(--steps);width:${pct(aer,150)}%"></i></div><div class="mrow"><span>Strength days</span><span>${sd} / 2</span></div><div class="bar"><i style="background:var(--work);width:${pct(sd,2)}%"></i></div><div class="empty">WHO 2020, adults: 150–300 min moderate or 75–150 min vigorous aerobic activity a week, plus muscle-strengthening on 2 or more days. Run and HIIT count double here.</div>`;
+}
+function buildPlan(p){
+  const bmr=10*p.w+6.25*p.h-5*p.age+(p.sex==='Male'?5:-161),act={Sedentary:1.3,Light:1.45,Active:1.6}[p.act];
+  const diff=p.tw-p.w,goal=diff<-1?'cut':diff>1?'bulk':'recomp';
+  let adj=goal==='cut'?-.2:goal==='bulk'?.12:0;adj+=p.body==='Ectomorph'?.04:p.body==='Endomorph'?-.03:0;
+  const cal=Math.max(p.sex==='Male'?1500:1200,Math.round(bmr*act*(1+adj)/10)*10);
+  const pro=Math.round(p.w*(goal==='cut'?2.2:2)),fat=Math.round(cal*.27/9),carb=Math.max(0,Math.round((cal-pro*4-fat*9)/4));
+  let steps={Sedentary:7000,Light:8500,Active:10000}[p.act]+(goal==='cut'?1500:0)+(p.body==='Endomorph'?1000:0);steps=Math.min(14000,Math.round(steps/500)*500);
+  const base={3:['Push','Pull','Legs'],4:['Upper','Lower','Upper','Lower'],5:['Push','Pull','Legs','Upper','Lower'],6:['Push','Pull','Legs','Upper','Lower','Cardio']}[p.days];
+  const wd={3:['Mon','Wed','Fri'],4:['Mon','Tue','Thu','Fri'],5:['Mon','Tue','Wed','Thu','Fri'],6:['Mon','Tue','Wed','Thu','Fri','Sat']}[p.days];
+  const rx=p.look==='Strong'?'Main lifts: 4 sets of 4–6 reps with long rests. Accessories: 3 sets of 8–10.':p.look==='Muscular'?'3–4 sets of 8–12 reps, stopping 1–2 reps before failure. Add weight when you reach the top of the range.':'3 sets of 10–15 reps with controlled tempo. Add a little weight or one rep each week.';
+  const wk=goal==='cut'?Math.ceil(-diff/.5):Math.ceil(diff/.25);
+  const note=goal==='cut'?`Fat-loss phase at about 0.5 kg a week: roughly ${wk} weeks to reach ${p.tw} kg.`:goal==='bulk'?`Lean-gain phase at about 0.25 kg a week: roughly ${wk} weeks to reach ${p.tw} kg.`:'Recomposition: eat near maintenance, train hard and let strength rise while body fat drops slowly.';
+  return{cal,pro,fat,carb,steps,sched:wd.map((d,i)=>[d,base[i]]),rx:rx+' Train on the listed days and rest on the others.',note}}
+function dietPlan(p,pl){const F={Veg:['Paneer bhurji, 2 rotis, fruit','Dal, rice, curd, sabzi, salad','Roasted chana with soy milk or whey','Tofu or paneer, roti or quinoa, vegetables'],Egg:['3-egg omelette, toast, banana','Dal, rice, 2 boiled eggs, salad','Greek yogurt, nuts, fruit','Egg curry or paneer, roti, vegetables'],Non:['Eggs, oats, banana','Grilled chicken, rice, dal, salad','Greek yogurt, nuts, fruit','Fish or chicken curry, roti, vegetables']}[p.diet];
+  return[['Breakfast',.25],['Lunch',.3],['Snack',.15],['Dinner',.3]].map(([n,s],i)=>[n,Math.round(pl.cal*s/10)*10,F[i]+' · about '+Math.round(pl.pro*s)+' g protein'])}
+function renderPlan(){const b=$('planBox'),p=S.profile,pl=S.plan;
+  if(!p||!pl){b.innerHTML='';return}
+  b.innerHTML=`<div class="card"><h2>🧍 Player profile</h2><div class="mrow"><span>${esc(p.name)}</span><span>${p.sex}, ${p.age} y</span></div><div class="mrow"><span>Height / weight</span><span>${p.h} cm / ${p.w} kg</span></div><div class="mrow"><span>Target</span><span>${p.tw} kg · ${p.look}</span></div><div class="mrow"><span>Body type</span><span>${p.body}</span></div><div class="empty">${pl.note}</div></div>
+  <div class="card"><h2>🎯 Daily targets</h2><div class="mrow"><span>Calories</span><span>${fmt(pl.cal)} kcal</span></div><div class="mrow"><span>Protein / carbs / fat</span><span>${pl.pro} / ${pl.carb} / ${pl.fat} g</span></div><div class="mrow"><span>Steps</span><span>${fmt(pl.steps)}</span></div></div>
+  <div class="card"><h2>🏰 Dungeon schedule</h2>${pl.sched.map(([d,s])=>`<div class="item"><div>${d}<small>${s==='Cardio'?'30–40 min zone 2 cardio or a brisk walk':SPLIT[s].join(', ')}</small></div><b>${EM[s]||'🏃'} ${s}</b></div>`).join('')}<div class="empty">${pl.rx}</div></div>
+  <div class="card"><h2>🍱 Diet plan</h2>${dietPlan(p,pl).map(m=>`<div class="item"><div>${m[0]}<small>${m[2]}</small></div><b>${m[1]} kcal</b></div>`).join('')}</div>
+  <button class="ghost" id="resetP" type="button">Reset profile and start again</button>`;
+  $('resetP').onclick=()=>{if(confirm('Reset your profile? Your logs stay.')){S.profile=null;S.plan=null;save();render()}}}
+const EM={Push:'🤜',Pull:'🪝',Legs:'🦵',Upper:'💪',Lower:'🏋️',Cardio:'🏃'};
+function toast(t,sub){const e=document.createElement('div');e.className='toast';e.innerHTML='<b>'+t+'</b><span>'+sub+'</span>';document.body.appendChild(e);setTimeout(()=>e.remove(),3200)}
+function statusUI(xp,lv,rk){
+  if(S.lv==null)S.lv=lv;if(lv>S.lv){S.lv=lv;save();toast('LEVEL UP!','Lv '+lv+' · Rank '+rk)}
+  const D=Object.values(S.days);let lifts=0,steps=0,meals=0,mins=0,logged=0,best=0;
+  D.forEach(x=>{const l=(x.lifts||[]).length,f=(x.food||[]).length,w=(x.work||[]);lifts+=l;steps+=x.steps||0;meals+=f;mins+=w.reduce((a,v)=>a+v.min,0);best=Math.max(best,x.steps||0);if((x.steps||0)||f||w.length||l)logged++});
+  const col={E:'#8A94A6',D:'#3DDC97',C:'#4C8DFF',B:'#9B6BFF',A:'#FF9F43',S:'#FF4D6D'}[rk];
+  const st=[['💪','STR',10+lifts*2],['👟','AGI',10+Math.floor(steps/4000)],['🛡️','VIT',10+meals],['🧠','INT',10+Math.floor(mins/15)],['👁️','SENSE',10+logged*3]];
+  $('status').innerHTML=`<svg viewBox="0 0 80 90" width="76" height="86" role="img" aria-label="Rank ${rk}"><polygon points="40,4 74,22 74,64 40,86 6,64 6,22" fill="#060C20" stroke="${col}" stroke-width="3" style="filter:drop-shadow(0 0 8px ${col})"/><text x="40" y="58" text-anchor="middle" font-family="Orbitron" font-weight="800" font-size="34" fill="${col}">${rk}</text></svg><div class="stats">${st.map(([e,n,v])=>`<div class="mrow"><span>${e} ${n}</span><span>${v}</span></div><div class="bar"><i style="background:${col};width:${Math.min(100,v)}%"></i></div>`).join('')}</div>`;
+  const K=[['🗡️','First Blood',lifts>0||mins>0],['👟','Gate Runner',best>=10000],['🍗','Well Fed',meals>=10],['🌑','Shadow Extraction',!!S.qd],['🔥','7-Day Streak',logged>=7],['⚡','Level 5',lv>=5],['🛡️','Rank C','CBAS'.includes(rk)],['👑','Shadow Monarch',rk==='S']];
+  $('stickers').innerHTML=K.map(([e,n,on])=>`<div class="sk${on?' on':''}" title="${on?'Unlocked':'Locked'}"><span>${e}</span><small>${n}</small></div>`).join('');
+  const M=['A Daily Quest has arrived. Failure has a penalty.','Your body is getting stronger, Player.','Only those who keep moving can rise.','Shadows gather around those who never skip leg day.','Arise. The gate will not wait.'];
+  $('sysmsg').innerHTML='<span class="tag">SYSTEM</span>'+(todaySplit?'Gate detected: '+todaySplit[1]+' raid today. ':'Rest day. Recover, Player. ')+M[new Date().getDate()%5]}
+SPLIT.Lower.push('Hanging leg raise');SPLIT.Upper.push('Side plank');
+const TIERS=[['Bronze',0,'#CD7F32'],['Silver',150,'#C0C8D8'],['Gold',450,'#F5C542'],['Platinum',1000,'#5FE3D1'],['Diamond',2000,'#6FB6FF'],['Master',3500,'#B26BFF'],['Mythic',6000,'#FF4D6D']];
+const MUSCLES=['Chest','Upper chest','Lats','Upper back','Lower back','Front delts','Side delts','Rear delts','Biceps','Triceps','Forearms','Abs','Obliques','Glutes','Quads','Hamstrings','Calves'];
+const MUS={'Bench press':['Chest','Triceps','Front delts'],'Overhead press':['Front delts','Side delts','Triceps'],'Incline dumbbell press':['Upper chest','Front delts'],'Lateral raise':['Side delts'],'Triceps pushdown':['Triceps'],'Push-ups or dips':['Chest','Triceps'],'Pull-ups or lat pulldown':['Lats','Biceps'],'Barbell or cable row':['Upper back','Lats'],'Face pull':['Rear delts','Upper back'],'Biceps curl':['Biceps','Forearms'],'Hammer curl':['Biceps','Forearms'],'Rear delt fly':['Rear delts'],'Back squat':['Quads','Glutes'],'Romanian deadlift':['Hamstrings','Glutes','Lower back'],'Leg press':['Quads','Glutes'],'Walking lunges':['Quads','Glutes'],'Leg curl':['Hamstrings'],'Calf raise':['Calves'],'Seated row':['Upper back','Lats'],'Lat pulldown':['Lats','Biceps'],'Triceps extension':['Triceps'],'Deadlift':['Lower back','Hamstrings','Glutes'],'Goblet or front squat':['Quads','Abs'],'Hip thrust':['Glutes'],'Leg extension':['Quads'],'Hanging leg raise':['Abs'],'Side plank':['Obliques']};
+const setXP=l=>(l.sets||1)*(10+Math.min(20,Math.round((l.kg||0)/5)));
+function muscleXP(){const m={};MUSCLES.forEach(k=>m[k]=0);Object.values(S.days).forEach(x=>(x.lifts||[]).forEach(l=>(MUS[l.ex]||[]).forEach(k=>m[k]+=setXP(l))));return m}
+const tierOf=v=>{let i=0;TIERS.forEach((t,j)=>{if(v>=t[1])i=j});return i};
+function tiers(){const m=muscleXP(),o={};MUSCLES.forEach(k=>o[k]=tierOf(m[k]));return o}
+function renderRanks(xp,lv){const m=muscleXP(),prev=(lv-1)*(lv-1)*40,next=lv*lv*40;
+  let h=`<div class="card"><h2>⚡ Player level</h2><div class="mrow"><span>Level ${lv}</span><span>${fmt(xp)} / ${fmt(next)} XP</span></div><div class="bar"><i style="background:var(--sun);width:${pct(xp-prev,next-prev)}%"></i></div><div class="empty">Every logged set earns XP for the muscles it trains. Heavier sets earn more.</div></div>`;
+  h+='<div class="card"><h2>💪 Muscle ranks</h2><div class="mg">'+MUSCLES.map(k=>{const v=m[k],i=tierOf(v),t=TIERS[i],n=TIERS[i+1];return `<div class="mc" style="border-color:${t[2]}"><b style="color:${t[2]}">${t[0]}</b><span>${k}</span><div class="bar"><i style="background:${t[2]};width:${n?pct(v-t[1],n[1]-t[1]):100}%"></i></div><small>${n?fmt(v)+' / '+fmt(n[1])+' XP':'Max rank'}</small></div>`}).join('')+'</div></div>';
+  const weak=[...MUSCLES].sort((a,b)=>m[a]-m[b]).slice(0,3),picks=[...new Set(weak.map(k=>Object.keys(MUS).find(e=>MUS[e].includes(k))))];
+  h+=`<div class="card"><h2>🎯 Suggested raid</h2><div class="empty">Your weakest muscles right now: ${weak.join(', ')}. Train these next.</div>${picks.map(e=>`<div class="item"><div>${e}<small>${MUS[e].join(' · ')}</small></div></div>`).join('')}</div>`;
+  $('ranksBox').innerHTML=h}
+function tab(t){document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+$('fForm').onsubmit=e=>{e.preventDefault();day().food.push({name:$('fName').value.trim(),cal:+$('fCal').value,pro:+$('fPro').value||0,carb:+$('fCarb').value||0,fat:+$('fFat').value||0});e.target.reset();save();render()};
+$('wForm').onsubmit=e=>{e.preventDefault();const m=+$('wMin').value;day().work.push({type:$('wType').value,min:m,cal:+$('wCal').value||m*6});e.target.reset();save();render()};
+$('stForm').onsubmit=e=>{e.preventDefault();if($('stIn').value==='')return;day().steps=Math.max(0,+$('stIn').value);e.target.reset();save();render()};
+document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const d=day();d.steps=Math.max(0,d.steps+ +b.dataset.add);save();render()});
+document.addEventListener('click',e=>{const f=e.target.dataset.df,w=e.target.dataset.dw;if(f!==undefined){day().food.splice(+f,1);save();render()}if(w!==undefined){day().work.splice(+w,1);save();render()}});
+$('goalsBtn').onclick=()=>{const c=prompt('Daily calorie goal',S.goals.cal);if(c===null)return;const s=prompt('Daily step goal',S.goals.steps);if(s===null)return;const m=prompt('Daily active minutes goal',S.goals.min);if(m===null)return;const pr=prompt('Daily protein goal (g)',S.goals.pro);if(pr===null)return;S.goals={cal:+c||S.goals.cal,steps:+s||S.goals.steps,min:+m||S.goals.min,pro:+pr||S.goals.pro};save();render()};
+$('lForm').onsubmit=e=>{e.preventDefault();const before=tiers();day().lifts.push({day:split,ex:$('lEx').value,sets:+$('lSets').value,reps:+$('lReps').value,kg:+$('lKg').value||0});['lSets','lReps','lKg'].forEach(i=>$(i).value='');save();render();const L=day().lifts[day().lifts.length-1],after=tiers(),up=MUSCLES.find(k=>after[k]>before[k]);toast(up?'RANK UP!':'+'+setXP(L)+' XP',up?up+' reached '+TIERS[after[up]][0]:(MUS[L.ex]||[]).join(' · '))};
+document.addEventListener('click',e=>{const t=e.target;if(t.dataset.split){split=t.dataset.split;try{localStorage.setItem('arise-split',split)}catch(x){}render()}if(t.dataset.dl!==undefined){day().lifts.splice(+t.dataset.dl,1);save();render()}});
+function shrink(f){return new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const s=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?res(b):rej(),'image/jpeg',.8)};im.onerror=rej;im.src=URL.createObjectURL(f)})}
+$('scanBtn').onclick=()=>$('fCam').click();
+$('fCam').onchange=async e=>{const f=e.target.files[0];if(!f)return;const m=$('scanMsg');
+  try{const sample=await claude.use('sample');if(!sample){m.textContent='Meal scanning works inside the Claude app. Enter the meal by hand.';return}
+    m.textContent='Reading your meal…';
+    const r=await sample.json('Identify the meal in this photo and estimate the whole portion shown. Reply with JSON only: {"name":string,"cal":number,"pro":number,"carb":number,"fat":number} using kcal and grams. If no food is visible, reply {"name":"","cal":0,"pro":0,"carb":0,"fat":0}.',{images:[await shrink(f)],modelTier:'quick'});
+    if(!r||!r.name){m.textContent='No food found. Try a closer photo.';return}
+    $('fName').value=r.name;$('fCal').value=Math.round(r.cal);$('fPro').value=Math.round(r.pro);$('fCarb').value=Math.round(r.carb);$('fFat').value=Math.round(r.fat);
+    m.textContent='This is an estimate from your photo. Check the numbers, then tap Add meal.';
+  }catch(err){m.textContent=err&&err.code==='not_granted'?'Permission declined. Enter the meal by hand.':'Could not read the photo. Enter the meal by hand.'}
+  e.target.value=''};
+let acc=0;
+$('watchBtn').onclick=async()=>{const m=$('watchMsg');
+  if(!navigator.bluetooth){m.textContent='This browser can’t use Bluetooth. Try Chrome on Android or desktop.';return}
+  try{const dev=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['running_speed_and_cadence','heart_rate']});
+    const srv=await dev.gatt.connect(),got=[];
+    try{const c=await(await srv.getPrimaryService('running_speed_and_cadence')).getCharacteristic('rsc_measurement');await c.startNotifications();c.addEventListener('characteristicvaluechanged',ev=>{acc+=ev.target.value.getUint8(3)/60;if(acc>=10){const n=Math.floor(acc);day().steps+=n;acc-=n;save();render()}});got.push('steps from cadence')}catch(x){}
+    try{const c=await(await srv.getPrimaryService('heart_rate')).getCharacteristic('heart_rate_measurement');await c.startNotifications();c.addEventListener('characteristicvaluechanged',ev=>{const v=ev.target.value;$('hr').textContent='♥ '+((v.getUint8(0)&1)?v.getUint16(1,true):v.getUint8(1))+' bpm'});got.push('heart rate')}catch(x){}
+    m.textContent=got.length?'Connected to '+(dev.name||'your watch')+': '+got.join(' and ')+'.':'Connected, but this watch shares neither steps nor heart rate over Bluetooth.';
+    dev.addEventListener('gattserverdisconnected',()=>{m.textContent='Watch disconnected.'})
+  }catch(x){m.textContent=x&&x.name==='NotFoundError'?'No watch selected.':'Could not connect. Bluetooth may be blocked in this view.'}};
+$('onbForm').onsubmit=e=>{e.preventDefault();const v=id=>$(id).value;
+  const p={name:v('oName').trim()||'Player',age:+v('oAge'),sex:v('oSex'),h:+v('oH'),w:+v('oW'),tw:+v('oTW'),body:v('oBody'),look:v('oLook'),days:+v('oDays'),diet:v('oDiet'),act:v('oAct')};
+  const pl=buildPlan(p);S.profile=p;S.plan=pl;S.goals={cal:pl.cal,steps:pl.steps,min:45,pro:pl.pro};save();render();tab('plan');window.scrollTo(0,0)};
+render();
+</script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})</script>
+</body>
+</html>
